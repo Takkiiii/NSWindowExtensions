@@ -6,9 +6,14 @@ namespace NSWindowExtensions
 {
 	public static class NSWindowExtensions
 	{
+        /// <summary>
+        /// Runs the sheet async.
+        /// </summary>
+        /// <returns>The sheet async.</returns>
+        /// <param name="owner">Owner.</param>
+        /// <param name="sheetWindow">Sheet window.</param>
 		public static Task<nint> RunSheetAsync(this AppKit.NSWindow owner, AppKit.NSWindow sheetWindow)
 		{
-
 			if (sheetWindow == null)
 				throw new ArgumentNullException(nameof(sheetWindow));
 
@@ -19,6 +24,14 @@ namespace NSWindowExtensions
 			return tcs.Task;
 		}
 
+        /// <summary>
+        /// Runs the alert async.
+        /// </summary>
+        /// <returns>The alert async.</returns>
+        /// <param name="owner">Owner.</param>
+        /// <param name="title">Title.</param>
+        /// <param name="message">Message.</param>
+        /// <param name="style">Style.</param>
 		public static Task<nint> RunAlertAsync(this AppKit.NSWindow owner, string title, string message, AppKit.NSAlertStyle style)
 		{
 			if (owner == null)
@@ -35,6 +48,14 @@ namespace NSWindowExtensions
 			return tcs.Task;
 		}
 
+        /// <summary>
+        /// Runs the confirm alert async.
+        /// </summary>
+        /// <returns>The confirm alert async.</returns>
+        /// <param name="owner">Owner.</param>
+        /// <param name="title">Title.</param>
+        /// <param name="message">Message.</param>
+        /// <param name="style">Style.</param>
 		public static Task<bool> RunConfirmAlertAsync(this AppKit.NSWindow owner, string title, string message, AppKit.NSAlertStyle style)
 		{
 			if (owner == null)
@@ -53,18 +74,13 @@ namespace NSWindowExtensions
 			return tcs.Task;
 		}
 
-		public static void ShowAlertOnWindow(this AppKit.NSWindow owner, string title, string message, AppKit.NSAlertStyle style)
-		{
-			using (var alert = new AppKit.NSAlert())
-			{
-				alert.MessageText = title;
-				alert.InformativeText = message;
-				alert.AlertStyle = style;
-				alert.BeginSheet(owner);
-			}
-		}
-
-		public static Task<string> ShowSaveFileDialog(this AppKit.NSWindow owner, params string[] allowedExtension)
+        /// <summary>
+        /// Shows the save file dialog.
+        /// </summary>
+        /// <returns>The save file dialog.</returns>
+        /// <param name="owner">Owner.</param>
+        /// <param name="allowedExtension">Allowed extension.</param>
+		public static Task<string> ShowSaveFileDialogAsync(this AppKit.NSWindow owner, params string[] allowedExtension)
 		{
 			var tcs = new TaskCompletionSource<string>();
 			var sfd = AppKit.NSSavePanel.SavePanel;
@@ -81,7 +97,13 @@ namespace NSWindowExtensions
 			return tcs.Task;
 		}
 
-		public static Task<string> ShowOpenFileDialog(this AppKit.NSWindow owner, params string[] allowedExtension)
+        /// <summary>
+        /// Shows the open file dialog.
+        /// </summary>
+        /// <returns>The open file dialog.</returns>
+        /// <param name="owner">Owner.</param>
+        /// <param name="allowedExtension">Allowed extension.</param>
+		public static Task<string> ShowOpenFileDialogAsync(this AppKit.NSWindow owner, params string[] allowedExtension)
 		{
 			var tcs = new TaskCompletionSource<string>();
 			var sfd = AppKit.NSOpenPanel.OpenPanel;
@@ -97,23 +119,12 @@ namespace NSWindowExtensions
 			return tcs.Task;
 		}
 
-		public static Task<string> ShowOpenFileDialog(this AppKit.NSWindow owner)
-		{
-			var tcs = new TaskCompletionSource<string>();
-			var sfd = AppKit.NSOpenPanel.OpenPanel;
-
-			sfd.BeginSheet(owner, (result) =>
-			{
-				sfd.OrderOut(owner);
-				if (result < 1)
-					tcs.SetCanceled();
-				else
-					tcs.SetResult(sfd.Url.Path);
-			});
-			return tcs.Task;
-		}
-
-		public static Task<string[]> SelectPathAsync(this AppKit.NSWindow owner, bool canChooseDir, bool canMultiSelection)
+        /// <summary>
+        /// Shows the open file dialog.
+        /// </summary>
+        /// <returns>The open file dialog.</returns>
+        /// <param name="owner">Owner.</param>
+		public static Task<string[]> ShowOpenFileDialogAsync(this AppKit.NSWindow owner, bool canChooseDir, bool canMultiSelection)
 		{
 			var tcs = new TaskCompletionSource<string[]>();
 			var panel = new AppKit.NSOpenPanel()

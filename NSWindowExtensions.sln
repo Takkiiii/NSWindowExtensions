@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSWindowExtensions", "NSWindowExtensions\NSWindowExtensions.csproj", "{4EA01908-1992-4309-8082-A0C7A16F87A9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{F98ACF76-ECE4-4C68-94DE-1CF048248867}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{F5538D3C-BF4C-4901-8C41-7B6F3AA5952C}"
 	ProjectSection(SolutionItems) = preProject
 		tools\NSWindowExtensions.nuspec = tools\NSWindowExtensions.nuspec
 	EndProjectSection
@@ -20,7 +20,7 @@ Global
 		{4EA01908-1992-4309-8082-A0C7A16F87A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		description = NSWindow Extensions for Xamarin mobile framework
-		version = 1.0.0.0
+		description = NSWindow Extensions for Xamarin mac
+		version = 1.0.0.1
 	EndGlobalSection
 EndGlobal
