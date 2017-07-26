@@ -1,4 +1,5 @@
-## NSWindowExtensions that NSWindow Extensions for Xamarin.Mac
+## NSWindowExtensions
+NSWindowExtensions that NSWindow Extensions for Xamarin.Mac
 
 ### Usage
 
