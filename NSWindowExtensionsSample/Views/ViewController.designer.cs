@@ -15,18 +15,50 @@ namespace NSWindowExtensionsSample.Views
 		AppKit.NSButton AlertButton { get; set; }
 
 		[Outlet]
+		AppKit.NSButton ModalButton { get; set; }
+
+		[Outlet]
+		AppKit.NSButton SelectDirectoryButton { get; set; }
+
+		[Outlet]
+		AppKit.NSButton SelectFileButton { get; set; }
+
+		[Outlet]
+		AppKit.NSButton SelectFilesButton { get; set; }
+
+		[Outlet]
 		AppKit.NSButton SheetButton { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (SheetButton != null) {
-				SheetButton.Dispose ();
-				SheetButton = null;
+			if (SelectFilesButton != null) {
+				SelectFilesButton.Dispose ();
+				SelectFilesButton = null;
+			}
+
+			if (SelectFileButton != null) {
+				SelectFileButton.Dispose ();
+				SelectFileButton = null;
 			}
 
 			if (AlertButton != null) {
 				AlertButton.Dispose ();
 				AlertButton = null;
+			}
+
+			if (ModalButton != null) {
+				ModalButton.Dispose ();
+				ModalButton = null;
+			}
+
+			if (SelectDirectoryButton != null) {
+				SelectDirectoryButton.Dispose ();
+				SelectDirectoryButton = null;
+			}
+
+			if (SheetButton != null) {
+				SheetButton.Dispose ();
+				SheetButton = null;
 			}
 		}
 	}

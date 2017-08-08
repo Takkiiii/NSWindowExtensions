@@ -83,6 +83,10 @@
     <Compile Include="Views\ViewController.designer.cs">
       <DependentUpon>ViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\AnotherViewController.cs" />
+    <Compile Include="Views\AnotherViewController.designer.cs">
+      <DependentUpon>AnotherViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
