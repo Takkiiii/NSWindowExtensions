@@ -15,7 +15,16 @@ namespace NSWindowExtensionsSample.Views
 		AppKit.NSButton AlertButton { get; set; }
 
 		[Outlet]
+		AppKit.NSButton ConfirmButton { get; set; }
+
+		[Outlet]
 		AppKit.NSButton ModalButton { get; set; }
+
+		[Outlet]
+		AppKit.NSButton SaveButton { get; set; }
+
+		[Outlet]
+		AppKit.NSButton SaveWith { get; set; }
 
 		[Outlet]
 		AppKit.NSButton SelectDirectoryButton { get; set; }
@@ -31,14 +40,9 @@ namespace NSWindowExtensionsSample.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (SelectFilesButton != null) {
-				SelectFilesButton.Dispose ();
-				SelectFilesButton = null;
-			}
-
-			if (SelectFileButton != null) {
-				SelectFileButton.Dispose ();
-				SelectFileButton = null;
+			if (SaveWith != null) {
+				SaveWith.Dispose ();
+				SaveWith = null;
 			}
 
 			if (AlertButton != null) {
@@ -46,14 +50,34 @@ namespace NSWindowExtensionsSample.Views
 				AlertButton = null;
 			}
 
+			if (ConfirmButton != null) {
+				ConfirmButton.Dispose ();
+				ConfirmButton = null;
+			}
+
 			if (ModalButton != null) {
 				ModalButton.Dispose ();
 				ModalButton = null;
 			}
 
+			if (SaveButton != null) {
+				SaveButton.Dispose ();
+				SaveButton = null;
+			}
+
 			if (SelectDirectoryButton != null) {
 				SelectDirectoryButton.Dispose ();
 				SelectDirectoryButton = null;
+			}
+
+			if (SelectFileButton != null) {
+				SelectFileButton.Dispose ();
+				SelectFileButton = null;
+			}
+
+			if (SelectFilesButton != null) {
+				SelectFilesButton.Dispose ();
+				SelectFilesButton = null;
 			}
 
 			if (SheetButton != null) {

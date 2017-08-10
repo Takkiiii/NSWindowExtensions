@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G23a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12121"/>
@@ -743,25 +743,17 @@
                                 </buttonCell>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="htp-1L-EUj">
-                                <rect key="frame" x="14" y="13" width="81" height="32"/>
+                                <rect key="frame" x="10" y="13" width="89" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="GTk-0H-u5r">
+                                <buttonCell key="cell" type="push" title="Confirm" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="GTk-0H-u5r">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jC4-c4-osi">
-                                <rect key="frame" x="200" y="13" width="81" height="32"/>
+                                <rect key="frame" x="206" y="13" width="70" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="C5B-Sg-1HW">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                            </button>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ipp-ki-mMZ">
-                                <rect key="frame" x="385" y="20" width="81" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="TQX-Yl-zNf">
+                                <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="C5B-Sg-1HW">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -790,11 +782,22 @@
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                             </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ipp-ki-mMZ">
+                                <rect key="frame" x="351" y="13" width="97" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="SaveWith" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="TQX-Yl-zNf">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
                         </subviews>
                     </view>
                     <connections>
                         <outlet property="AlertButton" destination="6Wx-k8-8D6" id="HWL-GS-W0p"/>
+                        <outlet property="ConfirmButton" destination="htp-1L-EUj" id="Tse-qV-n8t"/>
                         <outlet property="ModalButton" destination="6cf-y1-hlZ" id="mYM-hh-9MG"/>
+                        <outlet property="SaveButton" destination="jC4-c4-osi" id="XiF-OA-2tl"/>
+                        <outlet property="SaveWith" destination="ipp-ki-mMZ" id="i3r-2e-YwD"/>
                         <outlet property="SelectDirectoryButton" destination="Rld-sy-Ieo" id="lN5-eP-2Lc"/>
                         <outlet property="SelectFileButton" destination="5er-d3-59F" id="VZk-PA-BF9"/>
                         <outlet property="SelectFilesButton" destination="De4-hV-dKS" id="Ehu-DB-WS9"/>

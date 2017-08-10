@@ -57,6 +57,35 @@ namespace NSWindowExtensionsSample.Views
 					return;
                 await View.Window.RunAlertAsync("Selected files are ...", string.Join("¥n",ret), NSAlertStyle.Informational);
             };
+            ConfirmButton.Activated += async (sender, e) => 
+            {
+                var ret = await View.Window.RunConfirmAlertAsync("Confirm", "Select Yes or No.", NSAlertStyle.Informational);
+                await View.Window.RunAlertAsync("Selected button is ...", ret ? "Yes" : "No",NSAlertStyle.Informational);
+            };
+            SaveButton.Activated += async (sender, e) => 
+            {
+                try
+                {
+                    var path = await View.Window.ShowSaveFileDialogAsync(new[] { "txt" });
+                    await View.Window.RunAlertAsync("File name is ...", path, NSAlertStyle.Informational);
+                }
+                catch(OperationCanceledException)
+                {
+                    
+                }
+            };
+            SaveWith.Activated += async (sender, e) => 
+            {
+                try
+                {
+                    var path = await View.Window.ShowSaveFileDialogWithExtensionsPupUpButtonAsync(new[] { "txt", "xml" });
+                    await View.Window.RunAlertAsync("File name is ...", path, NSAlertStyle.Informational);
+                }
+				catch (OperationCanceledException)
+				{
+
+				}
+            };
         }
 
         private AnotherViewController InitiateAnotherViewController()
