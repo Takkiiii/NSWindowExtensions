@@ -32,6 +32,8 @@ namespace NSWindowExtensionsSample.Views
             SelectDirectoryButton.Activated += async (sender, e) => 
             {
                 var path = await View.Window.ShowOpenPanelDialogAsync(true, false);
+                if (path == null)
+                    return;
                 await View.Window.RunAlertAsync("Selected Directoy is ...", path[0], NSAlertStyle.Informational);
             };
             ModalButton.Activated += async (sender, e) => 
@@ -52,10 +54,17 @@ namespace NSWindowExtensionsSample.Views
             };
             SelectFilesButton.Activated += async (sender, e) => 
             {
-				var ret = await View.Window.ShowOpenPanelDialogAsync(false, true, new[] { "txt" });
-				if (ret == null)
-					return;
-                await View.Window.RunAlertAsync("Selected files are ...", string.Join("¥n",ret), NSAlertStyle.Informational);
+                try
+                {
+                    var ret = await View.Window.ShowOpenPanelDialogAsync(false, true, new[] { "txt" });
+                    if (ret == null)
+                        return;
+                    await View.Window.RunAlertAsync("Selected files are ...", string.Join("¥n", ret), NSAlertStyle.Informational);
+                }
+				catch (OperationCanceledException)
+				{
+
+				}
             };
             ConfirmButton.Activated += async (sender, e) => 
             {
