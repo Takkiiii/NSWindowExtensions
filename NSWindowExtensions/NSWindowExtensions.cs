@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Foundation;
 
 namespace NSWindowExtensions
 {
 	public static class NSWindowExtensions
 	{
         /// <summary>
-        /// Runs the sheet async.
+        ///     Runs the sheet async.
         /// </summary>
         /// <returns>The sheet async.</returns>
         /// <param name="owner">Owner.</param>
@@ -16,16 +17,36 @@ namespace NSWindowExtensions
 		{
 			if (sheetWindow == null)
 				throw new ArgumentNullException(nameof(sheetWindow));
-
 			var tcs = new TaskCompletionSource<nint>();
-
-			owner.BeginSheet(sheetWindow, result => tcs.SetResult(result));
-
+			owner.BeginSheet(sheetWindow, result =>
+            {
+                sheetWindow.OrderOut(owner);
+                tcs.SetResult(result);
+            });
 			return tcs.Task;
 		}
 
         /// <summary>
-        /// Runs the alert async.
+        ///     Runs the modal.
+        /// </summary>
+        /// <returns>The modal.</returns>
+        /// <param name="owner">Owner.</param>
+        /// <param name="sheetWindow">Sheet window.</param>
+        public static AppKit.NSModalResponse RunModal(this AppKit.NSWindow owner, AppKit.NSWindow sheetWindow)
+        {
+			if (sheetWindow == null)
+				throw new ArgumentNullException(nameof(sheetWindow));
+            var ret = (AppKit.NSModalResponse) (int) AppKit.NSApplication.SharedApplication.RunModalForWindow(sheetWindow);
+            System.Diagnostics.Debug.WriteLine(ret);
+            sheetWindow.ContentViewController.View.Window.WillClose += (sender, e) => 
+            { 
+                AppKit.NSApplication.SharedApplication.StopModalWithCode((int)ret); 
+            };
+            return ret;
+        }
+
+        /// <summary>
+        ///     Runs the alert async.
         /// </summary>
         /// <returns>The alert async.</returns>
         /// <param name="owner">Owner.</param>
@@ -37,19 +58,23 @@ namespace NSWindowExtensions
 			if (owner == null)
 				throw new ArgumentNullException(nameof(owner));
 			var tcs = new TaskCompletionSource<nint>();
-
-			using (var alert = new AppKit.NSAlert())
-			{
-				alert.InformativeText = message;
-				alert.MessageText = title;
-				alert.AlertStyle = style;
-				alert.BeginSheetForResponse(owner, ret => tcs.SetResult(ret));
-			}
+            using (var alert = new AppKit.NSAlert())
+            {
+                alert.InformativeText = message;
+                alert.MessageText = title;
+                alert.AlertStyle = style;
+                var window = alert.Window;
+                alert.BeginSheetForResponse(owner, ret =>
+                {
+					window.OrderOut(null);
+                    tcs.SetResult(ret);
+                });
+            }
 			return tcs.Task;
 		}
 
         /// <summary>
-        /// Runs the confirm alert async.
+        ///     Runs the confirm alert async.
         /// </summary>
         /// <returns>The confirm alert async.</returns>
         /// <param name="owner">Owner.</param>
@@ -61,21 +86,34 @@ namespace NSWindowExtensions
 			if (owner == null)
 				throw new ArgumentNullException(nameof(owner));
 			var tcs = new TaskCompletionSource<bool>();
-
+            var locale = NSLocale.CurrentLocale;
 			using (var alert = new AppKit.NSAlert())
 			{
 				alert.InformativeText = message;
 				alert.MessageText = title;
 				alert.AlertStyle = style;
-				alert.AddButton("はい");
-				alert.AddButton("いいえ");
-				alert.BeginSheetForResponse(owner, ret => tcs.SetResult(ret == (int)AppKit.NSAlertButtonReturn.First));
+                var window = alert.Window;
+                if (locale.CollatorIdentifier == "ja-JP")
+                {
+                    alert.AddButton("はい");
+                    alert.AddButton("いいえ");
+                }
+                else
+                {
+                    alert.AddButton("Yes");
+                    alert.AddButton("No");
+                }
+				alert.BeginSheetForResponse(owner, ret =>
+                {
+                    window.OrderOut(null);
+                    tcs.SetResult(ret == (int)AppKit.NSAlertButtonReturn.First);
+                });
 			}
 			return tcs.Task;
 		}
 
         /// <summary>
-        /// Shows the save file dialog.
+        ///     Shows the save file dialog.
         /// </summary>
         /// <returns>The save file dialog.</returns>
         /// <param name="owner">Owner.</param>
@@ -98,44 +136,64 @@ namespace NSWindowExtensions
 		}
 
         /// <summary>
-        /// Shows the open file dialog.
+        ///     Shows the save file dialog with extensions pup up button async.
         /// </summary>
-        /// <returns>The open file dialog.</returns>
+        /// <returns>The save file dialog with extensions pup up button async.</returns>
         /// <param name="owner">Owner.</param>
         /// <param name="allowedExtension">Allowed extension.</param>
-		public static Task<string> ShowOpenFileDialogAsync(this AppKit.NSWindow owner, params string[] allowedExtension)
-		{
-			var tcs = new TaskCompletionSource<string>();
-			var sfd = AppKit.NSOpenPanel.OpenPanel;
-			sfd.AllowedFileTypes = allowedExtension;
-			sfd.BeginSheet(owner, (result) =>
+        public static Task<string> ShowSaveFileDialogWithExtensionsPupUpButtonAsync(this AppKit.NSWindow owner, params string[] allowedExtension)
+        {
+            var tcs = new TaskCompletionSource<string>();
+            var panel = AppKit.NSSavePanel.SavePanel;
+            panel.CanCreateDirectories = true;
+            var extensionsBox = new AppKit.NSPopUpButton(new CoreGraphics.CGRect(0, 0, 200, 24), false);
+            extensionsBox.AddItems(allowedExtension);
+			panel.AccessoryView = extensionsBox;
+			panel.BeginSheet(owner, (result) =>
 			{
-				sfd.OrderOut(owner);
+				panel.OrderOut(owner);
 				if (result < 1)
 					tcs.SetCanceled();
 				else
-					tcs.SetResult(sfd.Url.Path);
+                    tcs.SetResult($"{panel.Url.Path}.{extensionsBox.SelectedItem.Title}");
 			});
 			return tcs.Task;
-		}
+        }
 
         /// <summary>
-        /// Shows the open file dialog.
+        /// Shows the open panel dialog async.
         /// </summary>
-        /// <returns>The open file dialog.</returns>
+        /// <returns>The open panel dialog async.</returns>
         /// <param name="owner">Owner.</param>
-		public static Task<string[]> ShowOpenFileDialogAsync(this AppKit.NSWindow owner, bool canChooseDir, bool canMultiSelection)
+        /// <param name="canChooseDir">If set to <c>true</c> can choose dir.</param>
+        /// <param name="canMultiSelection">If set to <c>true</c> can multi selection.</param>
+        public static Task<string[]> ShowOpenPanelDialogAsync(this AppKit.NSWindow owner, bool canChooseDir, bool canMultiSelection) => ShowOpenPanelDialogAsync(owner, canChooseDir, canChooseDir, new[] { string.Empty });
+
+        /// <summary>
+        ///     Shows the open file dialog async.
+        /// </summary>
+        /// <returns>The open file dialog async.</returns>
+        /// <param name="owner">Owner.</param>
+        /// <param name="canChooseDir">If set to <c>true</c> can choose dir.</param>
+        /// <param name="canMultiSelection">If set to <c>true</c> can multi selection.</param>
+        /// <param name="allowedExtension">Allowed extension.</param>
+		public static Task<string[]> ShowOpenPanelDialogAsync(this AppKit.NSWindow owner, bool canChooseDir, bool canMultiSelection, params string[] allowedExtension)
 		{
 			var tcs = new TaskCompletionSource<string[]>();
 			var panel = new AppKit.NSOpenPanel()
 			{
 				CanChooseDirectories = canChooseDir,
+                AllowedFileTypes = allowedExtension,
 				CanChooseFiles = !canChooseDir,
 				AllowsMultipleSelection = canMultiSelection,
 				CanCreateDirectories = !canMultiSelection,
-				ReleasedWhenClosed = true
+				ReleasedWhenClosed = true,
 			};
-			panel.BeginSheet(owner, ret => tcs.SetResult((ret > 0) ? panel.Urls.Select(x => x.Path).ToArray() : new string[] { }));
+			panel.BeginSheet(owner, ret =>
+            {
+                panel.OrderOut(owner);
+                tcs.SetResult((ret > 0) ? panel.Urls.Select(x => x.Path).ToArray() : null);
+            });
 			return tcs.Task;
 		}
 	}
