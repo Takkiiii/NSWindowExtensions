@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Foundation;
@@ -11,7 +12,7 @@ namespace NSWindowExtensions
         ///     Runs the sheet async.
         /// </summary>
         /// <returns>The sheet async.</returns>
-        /// <param name="owner">Owner.</param>
+        /// <param name="owner">Owner window.</param>
         /// <param name="sheetWindow">Sheet window.</param>
 		public static Task<nint> RunSheetAsync(this AppKit.NSWindow owner, AppKit.NSWindow sheetWindow)
 		{
@@ -30,14 +31,13 @@ namespace NSWindowExtensions
         ///     Runs the modal.
         /// </summary>
         /// <returns>The modal.</returns>
-        /// <param name="owner">Owner.</param>
+        /// <param name="owner">Owner windwo.</param>
         /// <param name="sheetWindow">Sheet window.</param>
         public static AppKit.NSModalResponse RunModal(this AppKit.NSWindow owner, AppKit.NSWindow sheetWindow)
         {
 			if (sheetWindow == null)
 				throw new ArgumentNullException(nameof(sheetWindow));
             var ret = (AppKit.NSModalResponse) (int) AppKit.NSApplication.SharedApplication.RunModalForWindow(sheetWindow);
-            System.Diagnostics.Debug.WriteLine(ret);
             sheetWindow.ContentViewController.View.Window.WillClose += (sender, e) => 
             { 
                 AppKit.NSApplication.SharedApplication.StopModalWithCode((int)ret); 
@@ -49,10 +49,10 @@ namespace NSWindowExtensions
         ///     Runs the alert async.
         /// </summary>
         /// <returns>The alert async.</returns>
-        /// <param name="owner">Owner.</param>
-        /// <param name="title">Title.</param>
-        /// <param name="message">Message.</param>
-        /// <param name="style">Style.</param>
+        /// <param name="owner">Owner window.</param>
+        /// <param name="title">Message's title.</param>
+        /// <param name="message">Detile message.</param>
+        /// <param name="style">NSAlert's style.</param>
 		public static Task<nint> RunAlertAsync(this AppKit.NSWindow owner, string title, string message, AppKit.NSAlertStyle style)
 		{
 			if (owner == null)
@@ -73,14 +73,14 @@ namespace NSWindowExtensions
 			return tcs.Task;
 		}
 
-        /// <summary>
-        ///     Runs the confirm alert async.
-        /// </summary>
-        /// <returns>The confirm alert async.</returns>
-        /// <param name="owner">Owner.</param>
-        /// <param name="title">Title.</param>
-        /// <param name="message">Message.</param>
-        /// <param name="style">Style.</param>
+		/// <summary>
+		///     Runs the confirm alert async.
+		/// </summary>
+		/// <returns>The confirm alert async.</returns>
+		/// <param name="owner">Owner.</param>
+		/// <param name="title">Message title.</param>
+		/// <param name="message">Detile message.</param>
+		/// <param name="style">NSAlert's style.</param>
 		public static Task<bool> RunConfirmAlertAsync(this AppKit.NSWindow owner, string title, string message, AppKit.NSAlertStyle style)
 		{
 			if (owner == null)
@@ -141,27 +141,44 @@ namespace NSWindowExtensions
         /// <returns>The save file dialog with extensions pup up button async.</returns>
         /// <param name="owner">Owner.</param>
         /// <param name="allowedExtension">Allowed extension.</param>
-        public static Task<string> ShowSaveFileDialogWithExtensionsPupUpButtonAsync(this AppKit.NSWindow owner, params string[] allowedExtension)
+        public static Task<string> ShowSaveFileDialogWithExtensionsPupUpButtonAsync(this AppKit.NSWindow owner, Dictionary<string,string> allowedExtension)
         {
             var tcs = new TaskCompletionSource<string>();
             var panel = AppKit.NSSavePanel.SavePanel;
             panel.CanCreateDirectories = true;
-            var extensionsBox = new AppKit.NSPopUpButton(new CoreGraphics.CGRect(0, 0, 200, 24), false);
-            extensionsBox.AddItems(allowedExtension);
-			panel.AccessoryView = extensionsBox;
+
+            var accessoryView = new AppKit.NSView(new CoreGraphics.CGRect(0, 0, 270, 50));
+            var extensionsBox = new AppKit.NSPopUpButton(new CoreGraphics.CGRect(130, 10, 120, 25), false);
+            extensionsBox.AddItems(allowedExtension.Values.ToArray());
+            var label = new AppKit.NSTextField(new CoreGraphics.CGRect(20, 15, 100, 18))
+            {
+                StringValue = "Format",
+                Alignment = AppKit.NSTextAlignment.Right,
+                Bordered = false,
+                Selectable = false,
+                Editable = false,
+                BackgroundColor = AppKit.NSColor.Clear
+            };
+
+            accessoryView.AddSubview(label);
+            accessoryView.AddSubview(extensionsBox);
+            panel.AccessoryView = accessoryView;
 			panel.BeginSheet(owner, (result) =>
 			{
 				panel.OrderOut(owner);
-				if (result < 1)
-					tcs.SetCanceled();
-				else
-                    tcs.SetResult($"{panel.Url.Path}.{extensionsBox.SelectedItem.Title}");
+                if (result < 1)
+                    tcs.SetCanceled();
+                else
+                {
+                    var item = allowedExtension.Keys.ToArray()[(int)extensionsBox.IndexOfSelectedItem];
+                    tcs.SetResult($"{panel.Url.Path}.{item}");
+                }
 			});
 			return tcs.Task;
         }
 
         /// <summary>
-        /// Shows the open panel dialog async.
+        ///     Shows the open panel dialog async as slect folder panel.
         /// </summary>
         /// <returns>The open panel dialog async.</returns>
         /// <param name="owner">Owner.</param>

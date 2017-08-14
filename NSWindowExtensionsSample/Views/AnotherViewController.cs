@@ -25,7 +25,7 @@ namespace NSWindowExtensionsSample.Views
                 if (this.View.Window.SheetParent == null)
                     this.View.Window.Close();
                 else
-                    this.View.Window.SheetParent?.EndSheet(View.Window, 0);
+                    this.View.Window.SheetParent?.EndSheet(View.Window);
             };
         }
     }
