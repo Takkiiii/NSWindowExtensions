@@ -21,11 +21,13 @@ namespace NSWindowExtensionsSample.Views
             base.ViewDidLoad();
             CloseButton.Activated += (sender, e) =>
             {
-                NSApplication.SharedApplication.StopModalWithCode((int)NSModalResponse.Cancel);
                 if (this.View.Window.SheetParent == null)
+                {
+                    NSApplication.SharedApplication.StopModalWithCode((int)NSModalResponse.Cancel);
                     this.View.Window.Close();
+                }
                 else
-                    this.View.Window.SheetParent?.EndSheet(View.Window);
+                    this.View.Window.SheetParent?.EndSheet(View.Window,NSModalResponse.Cancel);
             };
         }
     }

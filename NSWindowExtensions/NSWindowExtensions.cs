@@ -66,7 +66,7 @@ namespace NSWindowExtensions
                 var window = alert.Window;
                 alert.BeginSheetForResponse(owner, ret =>
                 {
-					window.OrderOut(null);
+                    window.OrderOut(owner);
                     tcs.SetResult(ret);
                 });
             }
@@ -184,7 +184,7 @@ namespace NSWindowExtensions
         /// <param name="owner">Owner.</param>
         /// <param name="canChooseDir">If set to <c>true</c> can choose dir.</param>
         /// <param name="canMultiSelection">If set to <c>true</c> can multi selection.</param>
-        public static Task<string[]> ShowOpenPanelDialogAsync(this AppKit.NSWindow owner, bool canChooseDir, bool canMultiSelection) => ShowOpenPanelDialogAsync(owner, canChooseDir, canChooseDir, new[] { string.Empty });
+        public static Task<string[]> ShowOpenPanelDialogAsync(this AppKit.NSWindow owner, bool canChooseDir, bool canMultiSelection) => ShowOpenPanelDialogAsync(owner, canChooseDir, canMultiSelection, new[] { string.Empty });
 
         /// <summary>
         ///     Shows the open file dialog async.
