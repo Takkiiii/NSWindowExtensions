@@ -31,10 +31,15 @@ namespace NSWindowExtensionsSample.Views
             };
             SelectDirectoryButton.Activated += async (sender, e) => 
             {
-                var path = await View.Window.ShowOpenPanelDialogAsync(true, false);
-                if (path == null)
-                    return;
-                await View.Window.RunAlertAsync("Selected Directoy is ...", path[0], NSAlertStyle.Informational);
+                try
+                {
+                    var path = await View.Window.ShowOpenPanelDialogAsync(true, false);
+                    await View.Window.RunAlertAsync("Selected Directoy is ...", path[0], NSAlertStyle.Informational);
+                }
+                catch(OperationCanceledException)
+                {
+                    
+                }
             };
             ModalButton.Activated += async (sender, e) => 
             {
@@ -48,8 +53,6 @@ namespace NSWindowExtensionsSample.Views
             SelectFileButton.Activated += async (sender, e) =>
             {
                 var ret = await View.Window.ShowOpenPanelDialogAsync(false, false, new[] { "txt" });
-                if (ret == null)
-                    return;
                 await View.Window.RunAlertAsync("Selected file is ...", ret[0], NSAlertStyle.Informational);
             };
             SelectFilesButton.Activated += async (sender, e) => 
@@ -57,8 +60,6 @@ namespace NSWindowExtensionsSample.Views
                 try
                 {
                     var ret = await View.Window.ShowOpenPanelDialogAsync(false, true, new[] { "txt" });
-                    if (ret == null)
-                        return;
                     await View.Window.RunAlertAsync("Selected files are ...", string.Join("¥n", ret), NSAlertStyle.Informational);
                 }
 				catch (OperationCanceledException)
@@ -87,7 +88,7 @@ namespace NSWindowExtensionsSample.Views
             {
                 try
                 {
-                    var path = await View.Window.ShowSaveFileDialogWithExtensionsPupUpButtonAsync(new System.Collections.Generic.Dictionary<string, string> { { "txt", "Text File (.txt)" }, { "xml", "XML File (.xml)" } });
+                    var path = await View.Window.ShowSaveFileDialogWithExtensionsPupUpButtonAsync(new System.Collections.Generic.Dictionary<string, string> { { "txt", "Text File (.txt)" }, { "xml", "XML File (.xml)" },{ "tif", "Credit image (.tif)" } });
                     await View.Window.RunAlertAsync("File name is ...", path, NSAlertStyle.Informational);
                 }
 				catch (OperationCanceledException)

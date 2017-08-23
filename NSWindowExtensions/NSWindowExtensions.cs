@@ -14,15 +14,15 @@ namespace NSWindowExtensions
         /// <returns>The sheet async.</returns>
         /// <param name="owner">Owner window.</param>
         /// <param name="sheetWindow">Sheet window.</param>
-		public static Task<nint> RunSheetAsync(this AppKit.NSWindow owner, AppKit.NSWindow sheetWindow)
+        public static Task<AppKit.NSModalResponse> RunSheetAsync(this AppKit.NSWindow owner, AppKit.NSWindow sheetWindow)
 		{
 			if (sheetWindow == null)
 				throw new ArgumentNullException(nameof(sheetWindow));
-			var tcs = new TaskCompletionSource<nint>();
+            var tcs = new TaskCompletionSource<AppKit.NSModalResponse>();
 			owner.BeginSheet(sheetWindow, result =>
             {
                 sheetWindow.OrderOut(owner);
-                tcs.SetResult(result);
+                tcs.SetResult((AppKit.NSModalResponse)(int)result);
             });
 			return tcs.Task;
 		}
@@ -148,9 +148,9 @@ namespace NSWindowExtensions
             panel.CanCreateDirectories = true;
 
             var accessoryView = new AppKit.NSView(new CoreGraphics.CGRect(0, 0, 270, 50));
-            var extensionsBox = new AppKit.NSPopUpButton(new CoreGraphics.CGRect(130, 10, 120, 25), false);
+            var extensionsBox = new AppKit.NSPopUpButton(new CoreGraphics.CGRect(105, 10, 165, 25), false);
             extensionsBox.AddItems(allowedExtension.Values.ToArray());
-            var label = new AppKit.NSTextField(new CoreGraphics.CGRect(20, 15, 100, 18))
+            var label = new AppKit.NSTextField(new CoreGraphics.CGRect(0, 15, 100, 18))
             {
                 StringValue = "Format",
                 Alignment = AppKit.NSTextAlignment.Right,
@@ -209,7 +209,10 @@ namespace NSWindowExtensions
 			panel.BeginSheet(owner, ret =>
             {
                 panel.OrderOut(owner);
-                tcs.SetResult((ret > 0) ? panel.Urls.Select(x => x.Path).ToArray() : null);
+                if (ret < 1)
+                    tcs.SetCanceled();
+                else
+                    tcs.SetResult(panel.Urls.Select(x => x.Path).ToArray());
             });
 			return tcs.Task;
 		}
