@@ -52,8 +52,15 @@ namespace NSWindowExtensionsSample.Views
             };
             SelectFileButton.Activated += async (sender, e) =>
             {
-                var ret = await View.Window.ShowOpenPanelDialogAsync(false, false, new[] { "txt" });
-                await View.Window.RunAlertAsync("Selected file is ...", ret[0], NSAlertStyle.Informational);
+                try
+                {
+                    var ret = await View.Window.ShowOpenPanelDialogAsync(false, false, new[] { "txt" });
+                    await View.Window.RunAlertAsync("Selected file is ...", ret[0], NSAlertStyle.Informational);
+                }
+                catch(OperationCanceledException)
+                {
+                    
+                }
             };
             SelectFilesButton.Activated += async (sender, e) => 
             {
