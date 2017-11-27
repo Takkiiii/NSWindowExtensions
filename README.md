@@ -7,6 +7,6 @@ NSWindowExtensions that NSWindow Extensions for Xamarin.Mac
 public override ViewDidLoad()
 {
     base.ViewDidLoad();
-    HogeButton.Activated += async(sender , e) => await View.Window.RunAlertAsync("Welcome!","Hello Xamarin.Mac!"NSAlertStyle.Informational);
+    SomeButton.Activated += async(sender , e) => await View.Window.RunAlertAsync("Welcome!","Hello Xamarin.Mac!"NSAlertStyle.Informational);
 }
 ```
