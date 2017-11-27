@@ -11,13 +11,13 @@ TestResults/
 Makefile.in
 *.DS_Store
 *.sln.cache
+*.zip
 *.suo
 *.cache
 *.pidb
 *.userprefs
 *.usertasks
 *.nupkg
-*.nuspec
 config.log
 config.make
 config.status
