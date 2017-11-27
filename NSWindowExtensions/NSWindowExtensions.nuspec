@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>NSWindowsExtensions</id>
-    <version>1.0.7.1</version>
+    <version>1.0.7.2</version>
     <title>NSWindowsExtensions</title>
     <authors>ShoTakizawa</authors>
     <owners>ShoTakizawa</owners>
@@ -11,6 +11,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>NSWindowExtensions that NSWindow Extensions for Xamarin.Mac</description>
     <copyright>Copyright 2017</copyright>
-    <tags>Tag1 Tag2</tags>
+    <tags>XamMac</tags>
   </metadata>
+  <files>
+    <file src="bin/Release/NSWindowExtensions.dll" target="lib/portable-net45+Xamarin.Mac20"/>
+  </files>
 </package>

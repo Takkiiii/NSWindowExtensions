@@ -118,7 +118,6 @@ namespace NSWindowExtensions
         /// <returns>The save file dialog.</returns>
         /// <param name="owner">Owner.</param>
         /// <param name="allowedExtension">Allowed extension.</param>
-
         public static Task<string> ShowSaveFileDialogAsync(this AppKit.NSWindow owner, params string[] allowedExtension)
         {
             var tcs = new TaskCompletionSource<string>();
