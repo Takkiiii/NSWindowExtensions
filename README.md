@@ -1,5 +1,11 @@
 ## NSWindowExtensions
-NSWindowExtensions that NSWindow Extensions for Xamarin.Mac
+[NSWindowExtensions](https://www.nuget.org/packages/NSWindowsExtensions/) is NSWindow Extensions for Xamarin.Mac
+
+## Install
+
+```bash 
+PM>Install-Package NSWindowsExtensions -Version 1.0.7.2
+```
 
 ### Usage
 
