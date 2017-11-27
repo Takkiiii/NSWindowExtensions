@@ -194,7 +194,7 @@ namespace NSWindowExtensions
         /// <param name="canChooseDir">If set to <c>true</c> can choose dir.</param>
         /// <param name="canMultiSelection">If set to <c>true</c> can multi selection.</param>
         /// <param name="allowedExtension">Allowed extension.</param>
-		public static Task<string[]> ShowOpenPanelDialogAsync(this AppKit.NSWindow owner, bool canChooseDir, bool canMultiSelection, params string[] allowedExtension)
+        public static Task<string[]> ShowOpenPanelDialogAsync(this AppKit.NSWindow owner, bool canChooseDir, bool canMultiSelection, params string[] allowedExtension)
         {
             var tcs = new TaskCompletionSource<string[]>();
             var panel = new AppKit.NSOpenPanel()
