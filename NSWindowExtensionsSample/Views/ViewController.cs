@@ -95,7 +95,7 @@ namespace NSWindowExtensionsSample.Views
             {
                 try
                 {
-                    var path = await View.Window.ShowSaveFileDialogWithExtensionsPupUpButtonAsync(new System.Collections.Generic.Dictionary<string, string> { { "txt", "Text File (.txt)" }, { "xml", "XML File (.xml)" },{ "tif", "Credit image (.tif)" } });
+                    var path = await View.Window.ShowSaveFileDialogAsync(new System.Collections.Generic.Dictionary<string, string> { { "txt", "Text File (.txt)" }, { "xml", "XML File (.xml)" },{ "tif", "Credit image (.tif)" } });
                     await View.Window.RunAlertAsync("File name is ...", path, NSAlertStyle.Informational);
                 }
 				catch (OperationCanceledException)

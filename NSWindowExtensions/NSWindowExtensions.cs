@@ -53,7 +53,7 @@ namespace NSWindowExtensions
         /// <param name="title">Message's title.</param>
         /// <param name="message">Detile message.</param>
         /// <param name="style">NSAlert's style.</param>
-		public static Task<nint> RunAlertAsync(this AppKit.NSWindow owner, string title, string message, AppKit.NSAlertStyle style)
+        public static Task<nint> RunAlertAsync(this AppKit.NSWindow owner, string title, string message, AppKit.NSAlertStyle style)
         {
             if (owner == null)
                 throw new ArgumentNullException(nameof(owner));
@@ -118,7 +118,8 @@ namespace NSWindowExtensions
         /// <returns>The save file dialog.</returns>
         /// <param name="owner">Owner.</param>
         /// <param name="allowedExtension">Allowed extension.</param>
-		public static Task<string> ShowSaveFileDialogAsync(this AppKit.NSWindow owner, params string[] allowedExtension)
+
+        public static Task<string> ShowSaveFileDialogAsync(this AppKit.NSWindow owner, params string[] allowedExtension)
         {
             var tcs = new TaskCompletionSource<string>();
             var sfd = AppKit.NSSavePanel.SavePanel;
@@ -141,7 +142,7 @@ namespace NSWindowExtensions
         /// <returns>The save file dialog with extensions pup up button async.</returns>
         /// <param name="owner">Owner.</param>
         /// <param name="allowedExtension">Allowed extension.</param>
-        public static Task<string> ShowSaveFileDialogWithExtensionsPupUpButtonAsync(this AppKit.NSWindow owner, Dictionary<string, string> allowedExtension)
+        public static Task<string> ShowSaveFileDialogAsync(this AppKit.NSWindow owner, Dictionary<string, string> allowedExtension)
         {
             var tcs = new TaskCompletionSource<string>();
             var panel = AppKit.NSSavePanel.SavePanel;
