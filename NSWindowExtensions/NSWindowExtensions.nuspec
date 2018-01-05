@@ -9,8 +9,8 @@
     <licenseUrl>https://github.com/Takkiiii/NSWindowExtensions/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/Takkiiii/NSWindowExtensions</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>NSWindowExtensions that NSWindow Extensions for Xamarin.Mac</description>
-    <copyright>Copyright 2017</copyright>
+    <description>NSWindowExtensions is NSWindow Extensions for Xamarin.Mac</description>
+    <copyright>Copyright 2017, ShoTakizawa</copyright>
     <tags>XamMac</tags>
   </metadata>
   <files>

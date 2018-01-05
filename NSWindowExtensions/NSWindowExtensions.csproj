@@ -11,8 +11,9 @@
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
-    <ReleaseVersion>1.0.6.1</ReleaseVersion>
+    <ReleaseVersion>1.0.7.2</ReleaseVersion>
     <SynchReleaseVersion>false</SynchReleaseVersion>
+    <Description>NSWindowExtensions is NSWindow Extensions for Xamarin.Mac</Description>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
