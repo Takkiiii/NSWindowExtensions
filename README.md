@@ -4,7 +4,7 @@
 ## Install
 
 ```bash 
-PM>Install-Package NSWindowsExtensions -Version 1.0.7.2
+PM>Install-Package NSWindowsExtensions -Version 1.0.7.3
 ```
 
 ### Usage
