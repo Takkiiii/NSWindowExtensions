@@ -83,7 +83,7 @@ namespace NSWindowExtensionsSample.Views
             {
                 try
                 {
-                    var path = await View.Window.ShowSaveFileDialogAsync(new[] { "txt" });
+                    var path = await View.Window.ShowSaveFileDialogAsync("Sample Name",new[] { "txt" });
                     await View.Window.RunAlertAsync("File name is ...", path, NSAlertStyle.Informational);
                 }
                 catch(OperationCanceledException)

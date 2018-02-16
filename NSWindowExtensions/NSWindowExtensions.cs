@@ -135,6 +135,24 @@ namespace NSWindowExtensions
             return tcs.Task;
         }
 
+        public static Task<string> ShowSaveFileDialogAsync(this AppKit.NSWindow owner, string nameField, params string[] allowedExtension)
+        {
+            var tcs = new TaskCompletionSource<string>();
+            var panel = AppKit.NSSavePanel.SavePanel;
+            panel.AllowedFileTypes = allowedExtension;
+            panel.NameFieldStringValue = nameField;
+            panel.CanCreateDirectories = true;
+            panel.BeginSheet(owner, (result) =>
+            {
+                panel.OrderOut(owner);
+                if (result < 1)
+                    tcs.SetCanceled();
+                else
+                    tcs.SetResult(panel.Url.Path);
+            });
+            return tcs.Task;
+        }
+
         /// <summary>
         ///     Shows the save file dialog with extensions pup up button async.
         /// </summary>
@@ -146,6 +164,43 @@ namespace NSWindowExtensions
             var tcs = new TaskCompletionSource<string>();
             var panel = AppKit.NSSavePanel.SavePanel;
             panel.CanCreateDirectories = true;
+
+            var accessoryView = new AppKit.NSView(new CoreGraphics.CGRect(0, 0, 270, 50));
+            var extensionsBox = new AppKit.NSPopUpButton(new CoreGraphics.CGRect(105, 10, 165, 25), false);
+            extensionsBox.AddItems(allowedExtension.Values.ToArray());
+            var label = new AppKit.NSTextField(new CoreGraphics.CGRect(0, 15, 100, 18))
+            {
+                StringValue = "Format",
+                Alignment = AppKit.NSTextAlignment.Right,
+                Bordered = false,
+                Selectable = false,
+                Editable = false,
+                BackgroundColor = AppKit.NSColor.Clear
+            };
+
+            accessoryView.AddSubview(label);
+            accessoryView.AddSubview(extensionsBox);
+            panel.AccessoryView = accessoryView;
+            panel.BeginSheet(owner, (result) =>
+            {
+                panel.OrderOut(owner);
+                if (result < 1)
+                    tcs.SetCanceled();
+                else
+                {
+                    var item = allowedExtension.Keys.ToArray()[(int)extensionsBox.IndexOfSelectedItem];
+                    tcs.SetResult($"{panel.Url.Path}.{item}");
+                }
+            });
+            return tcs.Task;
+        }
+
+        public static Task<string> ShowSaveFileDialogAsync(this AppKit.NSWindow owner, string nameField, Dictionary<string, string> allowedExtension)
+        {
+            var tcs = new TaskCompletionSource<string>();
+            var panel = AppKit.NSSavePanel.SavePanel;
+            panel.CanCreateDirectories = true;
+            panel.NameFieldStringValue = nameField;
 
             var accessoryView = new AppKit.NSView(new CoreGraphics.CGRect(0, 0, 270, 50));
             var extensionsBox = new AppKit.NSPopUpButton(new CoreGraphics.CGRect(105, 10, 165, 25), false);
